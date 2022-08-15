@@ -1,13 +1,15 @@
 package exception
 
 type ValidationError struct {
-	Message string
+	StatusCode int
+	Message    string
 }
 
 func ThrowValidationError(message string) *error {
 
 	var err error = &ValidationError{
-		Message: message,
+		StatusCode: 400,
+		Message:    message,
 	}
 	return &err
 }
