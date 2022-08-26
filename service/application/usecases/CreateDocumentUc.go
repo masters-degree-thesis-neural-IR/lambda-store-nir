@@ -1,5 +1,5 @@
 package usecases
 
 type CreateDocumentUc interface {
-	CreateDocument(title string, body string) error
+	CreateDocument(id string, title string, body string) error
 }

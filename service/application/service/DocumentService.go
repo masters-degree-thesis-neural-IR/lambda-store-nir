@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/google/uuid"
 	"lambda-store-nir/service/application/domain"
 	"lambda-store-nir/service/application/exception"
 	"lambda-store-nir/service/application/ports"
@@ -22,7 +21,11 @@ func NewDocumentService(documentEvent ports.DocumentEvent, documentRepository re
 	return c
 }
 
-func (s *DocumentService) CreateDocument(title string, body string) error {
+func (s *DocumentService) CreateDocument(id string, title string, body string) error {
+
+	if id == "" {
+		return *exception.ThrowValidationError("Invalid id from document")
+	}
 
 	if title == "" {
 		return *exception.ThrowValidationError("Invalid title from document")
@@ -32,10 +35,8 @@ func (s *DocumentService) CreateDocument(title string, body string) error {
 		return *exception.ThrowValidationError("Invalid body from document")
 	}
 
-	id, _ := uuid.NewRandom()
-
 	document := domain.Document{
-		Id:    id.String(),
+		Id:    id,
 		Title: title,
 		Body:  body,
 	}
