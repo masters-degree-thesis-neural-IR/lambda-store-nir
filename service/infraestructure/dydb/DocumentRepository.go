@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"lambda-store-nir/service/application/domain"
 	"lambda-store-nir/service/application/repositories"
-	"log"
 )
 
 type DocumentRepository struct {
@@ -28,7 +27,6 @@ func (s *DocumentRepository) Save(document domain.Document) error {
 	item, err := dynamodbattribute.MarshalMap(document)
 
 	if err != nil {
-		log.Fatalln("Error...: ", err)
 		return err
 	}
 
@@ -41,7 +39,6 @@ func (s *DocumentRepository) Save(document domain.Document) error {
 	_, err = svc.PutItem(input)
 
 	if err != nil {
-		log.Fatalln("Error...: ", err)
 		return err
 	}
 

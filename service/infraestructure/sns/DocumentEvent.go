@@ -28,7 +28,6 @@ func (d DocumentEvent) Created(document domain.Document) error {
 	doc, err := json.Marshal(document)
 
 	if err != nil {
-		log.Fatalln("Error...: ", err)
 		return err
 	}
 
@@ -39,7 +38,6 @@ func (d DocumentEvent) Created(document domain.Document) error {
 	})
 
 	if err != nil {
-		log.Fatalln("Error...: ", err)
 		return err
 	}
 

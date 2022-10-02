@@ -13,7 +13,7 @@ variable "local_environment" {
 variable "lambda_name" {
   type        = string
   description = "name of lambda"
-  default = "storegolambda"
+  default = "storelambda"
 }
 
 variable "lambda_runtime" {

@@ -11,7 +11,7 @@ import (
 	"lambda-store-nir/service/infraestructure/dto"
 	"lambda-store-nir/service/infraestructure/dydb"
 	"lambda-store-nir/service/infraestructure/sns"
-	"log"
+	"lambda-store-nir/service/infraestructure/zapLog"
 	"net/http"
 )
 
@@ -33,8 +33,6 @@ func ErrorHandler(err error) events.APIGatewayProxyResponse {
 		}
 
 	default:
-
-		log.Fatalln("Error...: ", err)
 
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusInternalServerError,
@@ -81,10 +79,11 @@ func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 		return ErrorHandler(err), nil
 	}
 
+	logger := zapLog.NewZapLogger()
 	repository := dydb.NewDocumentRepository(awsSession, TableName)
 	documentEvent := sns.NewDocumentEvent(awsSession, TopicArn)
-	documentService := service.NewDocumentService(documentEvent, repository)
-	err = documentService.CreateDocument(document.Title, document.Body)
+	documentService := service.NewDocumentService(logger, documentEvent, repository)
+	err = documentService.Create(document.Id, document.Title, document.Body)
 
 	if err != nil {
 		return ErrorHandler(err), nil
